@@ -18,7 +18,7 @@ import io.flutter.plugin.common.PluginRegistry
 
 const val kDefaultChannelName: String = "Location background service"
 const val kDefaultNotificationTitle: String = "Location background service running"
-const val kDefaultNotificationIconName: String = "@drawable/ic_launcher"
+const val kDefaultNotificationIconName: String = "@mipmap/ic_launcher"
 
 data class NotificationOptions(
         val channelName: String = kDefaultChannelName,
