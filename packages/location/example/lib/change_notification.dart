@@ -22,7 +22,7 @@ class _ChangeNotificationWidgetState extends State<ChangeNotificationWidget> {
     text: 'Location background service running',
   );
 
-  String? _iconName = 'navigation_empty_icon';
+  String? _iconName = 'app_icon';
 
   @override
   void dispose() {
@@ -71,7 +71,7 @@ class _ChangeNotificationWidgetState extends State<ChangeNotificationWidget> {
             },
             items: const <DropdownMenuItem<String>>[
               DropdownMenuItem<String>(
-                value: 'navigation_empty_icon',
+                value: 'app_icon',
                 child: Text('Empty'),
               ),
               DropdownMenuItem<String>(
