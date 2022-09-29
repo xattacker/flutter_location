@@ -19,6 +19,7 @@ import io.flutter.plugin.common.PluginRegistry
 const val kDefaultChannelName: String = "Location background service"
 const val kDefaultNotificationTitle: String = "Location background service running"
 const val kDefaultNotificationIconName: String = "@drawable/app_icon"
+const val kDefaultColor: String = "@color/blue"
 
 data class NotificationOptions(
         val channelName: String = kDefaultChannelName,
@@ -26,7 +27,7 @@ data class NotificationOptions(
         val iconName: String = kDefaultNotificationIconName,
         val subtitle: String? = null,
         val description: String? = null,
-        val color: Int? = null,
+        val color: kDefaultColor,
         val onTapBringToFront: Boolean = false
 )
 
