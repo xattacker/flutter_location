@@ -27,7 +27,7 @@ data class NotificationOptions(
         val iconName: String = kDefaultNotificationIconName,
         val subtitle: String? = null,
         val description: String? = null,
-        val color: kDefaultColor,
+        val color: String = kDefaultColor,
         val onTapBringToFront: Boolean = false
 )
 
