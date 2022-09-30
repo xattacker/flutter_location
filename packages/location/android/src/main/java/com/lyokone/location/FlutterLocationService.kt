@@ -26,7 +26,7 @@ data class NotificationOptions(
         val iconName: String = kDefaultNotificationIconName,
         val subtitle: String? = null,
         val description: String? = null,
-        val color: Int = -16776961,
+        val color: Int? = null,
         val onTapBringToFront: Boolean = false
 )
 
@@ -37,7 +37,9 @@ class BackgroundNotification(
 ) {
     private var options: NotificationOptions = NotificationOptions()
     private var builder: NotificationCompat.Builder = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.app_icon)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setColor(-16776961)
 
     init {
         updateNotification(options, false)
