@@ -196,11 +196,12 @@
         }
     }
 #else
-    if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil) {
-        [self.clLocationManager requestWhenInUseAuthorization];
-    }
-    else if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil) {
+    // modified by xattacker on 20230802, 調整為先 call requestAlwaysAuthorization 
+    if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil) {
         [self.clLocationManager requestAlwaysAuthorization];
+    }
+    else if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil) {
+        [self.clLocationManager requestWhenInUseAuthorization];
     }
 #endif
     else {
