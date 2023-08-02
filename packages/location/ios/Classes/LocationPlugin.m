@@ -97,6 +97,9 @@
     } else if ([call.method isEqualToString:@"enableBackgroundMode"]) {
         BOOL enable = [call.arguments[@"enable"] boolValue];
         if (self.applicationHasLocationBackgroundMode) {
+            // added by xattacker on 20230802, 设置iOS设备是否可暂停定位来节省电池的电量
+            self.clLocationManager.pausesLocationUpdatesAutomatically = !enable;
+          
             if (@available(iOS 9.0, *)) {
                 self.clLocationManager.allowsBackgroundLocationUpdates = enable;
             }
