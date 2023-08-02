@@ -20,7 +20,15 @@
 @property (assign, nonatomic) BOOL               applicationHasLocationBackgroundMode;
 @end
 
+// declared by xattacker on 20230802
+typedef void(^RequestLocationAuthorizationBlock)(CLAuthorizationStatus status);
+
 @implementation LocationPlugin
+{
+@private
+    RequestLocationAuthorizationBlock _authorizationBlock;
+}
+
 
 +(void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel *channel =
@@ -200,8 +208,28 @@
     }
 #else
     // modified by xattacker on 20230802, 調整為先 call requestAlwaysAuthorization 
-    if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil) {
-        [self.clLocationManager requestAlwaysAuthorization];
+    if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysAndWhenInUseUsageDescription"] != nil) {
+        // added with https://medium.com/swlh/location-permission-in-ios-13-f9e10917c05e
+        // iOS 13.4 之後, 要出現允許永久使用的權限時, 要先呼叫 requestWhenInUseAuthorization
+        // 等使用者同意了, 再呼叫 requestAlwaysAuthorization (因此會跳出兩次 confirm alert)
+        if (@available(iOS 13.4, *)) {
+            __weak LocationPlugin* mySelf = self;
+            _authorizationBlock = ^(CLAuthorizationStatus status) {
+                    if (status == kCLAuthorizationStatusAuthorizedWhenInUse)
+                    {
+                        if (mySelf != nil)
+                        {
+                            [mySelf.clLocationManager requestAlwaysAuthorization];
+                        }
+                    }
+                };
+            
+            [self.clLocationManager requestWhenInUseAuthorization];
+        }
+        else
+        {
+            [self.clLocationManager requestAlwaysAuthorization];
+        }
     }
     else if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil) {
         [self.clLocationManager requestWhenInUseAuthorization];
@@ -352,6 +380,13 @@
 #else //if TARGET_OS_IOS
     else if (status == kCLAuthorizationStatusAuthorizedWhenInUse ||
         status == kCLAuthorizationStatusAuthorizedAlways) {
+        // added by xattacker on 20230802
+        if (_authorizationBlock != nil)
+        {
+            _authorizationBlock(status);
+            _authorizationBlock = nil;
+        }
+        
         if (self.permissionWanted) {
             self.permissionWanted = NO;
             self.flutterResult([self isHighAccuracyPermitted] ? @1 : @3);
