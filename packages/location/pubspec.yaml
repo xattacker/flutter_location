@@ -1,7 +1,7 @@
 name: location
 description: A Flutter plugin to easily handle realtime location in iOS and Android. Provides settings for optimizing performance or battery.
 version: 4.4.2
-homepage:https://github.com/xattacker/flutterlocation
+homepage: https://github.com/xattacker/flutterlocation
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
