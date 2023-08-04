@@ -138,10 +138,14 @@ typedef void(^RequestLocationAuthorizationBlock)(CLAuthorizationStatus status);
 
         if ([self isPermissionGranted]) {
             [self.clLocationManager startUpdatingLocation];
+            // added by xattacker on 20230804, try to make Continuous Background Location Update
+            [self.clLocationManager startMonitoringSignificantLocationChanges];
         } else {
             [self requestPermission];
             if ([self isPermissionGranted]) {
                 [self.clLocationManager startUpdatingLocation];
+                // added by xattacker on 20230804, try to make Continuous Background Location Update
+                [self.clLocationManager startMonitoringSignificantLocationChanges];
             }
         }
     } else if ([call.method isEqualToString:@"hasPermission"]) {
@@ -297,6 +301,8 @@ typedef void(^RequestLocationAuthorizationBlock)(CLAuthorizationStatus status);
 
     if ([self isPermissionGranted]) {
         [self.clLocationManager startUpdatingLocation];
+         // added by xattacker on 20230804, try to make Continuous Background Location Update
+        [self.clLocationManager startMonitoringSignificantLocationChanges];
     } else {
         [self requestPermission];
     }
@@ -307,6 +313,8 @@ typedef void(^RequestLocationAuthorizationBlock)(CLAuthorizationStatus status);
 -(FlutterError*)onCancelWithArguments:(id)arguments {
     self.flutterListening = NO;
     [self.clLocationManager stopUpdatingLocation];
+     // added by xattacker on 20230804
+    [self.clLocationManager stopMonitoringSignificantLocationChanges];
     return nil;
 }
 
@@ -343,6 +351,8 @@ typedef void(^RequestLocationAuthorizationBlock)(CLAuthorizationStatus status);
         self.flutterEventSink(coordinatesDict);
     } else {
         [self.clLocationManager stopUpdatingLocation];
+         // added by xattacker on 20230804
+       [self.clLocationManager stopMonitoringSignificantLocationChanges];
         self.waitNextLocation = 2;
     }
 }
@@ -364,6 +374,8 @@ typedef void(^RequestLocationAuthorizationBlock)(CLAuthorizationStatus status);
 
         if (self.locationWanted || self.flutterListening) {
             [self.clLocationManager startUpdatingLocation];
+            // added by xattacker on 20230804, try to make Continuous Background Location Update
+            [self.clLocationManager startMonitoringSignificantLocationChanges];
         }
     } else if (@available(macOS 10.12, *)) {
         if (status == kCLAuthorizationStatusAuthorizedAlways) {
@@ -374,6 +386,8 @@ typedef void(^RequestLocationAuthorizationBlock)(CLAuthorizationStatus status);
 
             if (self.locationWanted || self.flutterListening) {
                 [self.clLocationManager startUpdatingLocation];
+                 // added by xattacker on 20230804, try to make Continuous Background Location Update
+                [self.clLocationManager startMonitoringSignificantLocationChanges];
             }
         }
     }
@@ -394,6 +408,8 @@ typedef void(^RequestLocationAuthorizationBlock)(CLAuthorizationStatus status);
 
         if (self.locationWanted || self.flutterListening) {
             [self.clLocationManager startUpdatingLocation];
+             // added by xattacker on 20230804, try to make Continuous Background Location Update
+            [self.clLocationManager startMonitoringSignificantLocationChanges];
         }
     }
 #endif
